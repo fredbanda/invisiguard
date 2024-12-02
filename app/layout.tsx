@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/navbars/navbar";
+import { Toaster } from "sonner";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -16,7 +17,8 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "Invisiguard | Security Solutions",
-  description: "The most comprehensive cyber threat protector and security enhancement to save your company lots of money from phishing",
+  description:
+    "The most comprehensive cyber threat protector and security enhancement to save your company lots of money from phishing",
 };
 
 export default function RootLayout({
@@ -31,6 +33,7 @@ export default function RootLayout({
       >
         <Navbar />
         {children}
+        <Toaster richColors />
       </body>
     </html>
   );

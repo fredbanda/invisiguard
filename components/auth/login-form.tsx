@@ -27,13 +27,12 @@ export const LoginForm = () => {
   const { handleSubmit, control, formState, reset, setError } = form;
 
   const submit = async (values: LoginInput) => {
-    const res = await loginUserAction(values)
+    const res = await loginUserAction(values);
 
-    if(res.success){
-      reset()
-    }else{
+    if (res.success) {
+      reset();
+    } else {
       console.log("This is kinda fake");
-      
     }
   };
 
@@ -47,7 +46,7 @@ export const LoginForm = () => {
       <Form {...form}>
         <form
           onSubmit={handleSubmit(submit)}
-          className="space-y-4 max-w-[600px] w-full"
+          className="w-full max-w-[600px] space-y-4"
         >
           <div className="flex-1 space-y-4">
             <FormField

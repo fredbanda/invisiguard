@@ -15,8 +15,13 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { CardWrapper } from "./card-wrapper";
 import { registerUserAction } from "@/actions/register-user-actions";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export const RegisterForm = () => {
+  const [success, setSuccess] = useState(false);
+  const router = useRouter()
   const form = useForm<RegisterInput>({
     resolver: valibotResolver(RegisterSchema),
     defaultValues: {
@@ -30,13 +35,16 @@ export const RegisterForm = () => {
       confirm_password: "",
     },
   });
-  const { handleSubmit, control, formState, reset, setError } = form;
+  const { handleSubmit, control, formState, setError } = form;
 
   const submit = async (values: RegisterInput) => {
     const res = await registerUserAction(values);
 
     if (res.success) {
-      reset();
+      setSuccess(true);
+      toast.success("User Created Successfully", {
+        position: "top-right",
+      });
     } else {
       switch (res.statusCode) {
         case 400:
@@ -52,9 +60,18 @@ export const RegisterForm = () => {
         default:
           const error = res.error || "Internal server error";
           setError("confirm_password", { message: error });
+          toast.error("Sorry the email is already registered.", {
+            position: "top-right",
+          });
       }
     }
   };
+
+  useEffect(() => {
+    if (success) {
+      router.push("/auth/login");
+    }
+  }, [success, router]);
 
   return (
     <CardWrapper
