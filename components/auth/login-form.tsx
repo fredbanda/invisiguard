@@ -24,7 +24,7 @@ export const LoginForm = () => {
       password: "",
     },
   });
-  const { handleSubmit, control, formState, reset, setError } = form;
+  const { handleSubmit, control, formState, reset} = form;
 
   const submit = async (values: LoginInput) => {
     const res = await loginUserAction(values);

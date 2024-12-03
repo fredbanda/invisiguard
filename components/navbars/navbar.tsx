@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import Image from "next/image";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -59,10 +60,12 @@ const Navbar = () => {
           {/* Logo and Links */}
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex shrink-0 items-center">
-              <img
+              <Image
                 className="h-8 w-auto"
-                src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500"
-                alt="Your Company"
+                src="/logo.png"
+                alt="Invisiguards"
+                width={140}
+                height={40}
               />
             </div>
             <div className="hidden sm:ml-6 sm:block">
@@ -120,10 +123,12 @@ const Navbar = () => {
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
                 >
                   <span className="sr-only">Open user menu</span>
-                  <img
+                  <Image
                     className="h-8 w-8 rounded-full"
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                    src="/user.png"
                     alt=""
+                    width={40}
+                    height={40}
                   />
                 </button>
               </div>
