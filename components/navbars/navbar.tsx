@@ -62,7 +62,7 @@ const Navbar = () => {
             <div className="flex shrink-0 items-center">
               <Link href="/">
               <Image
-                className="h-8 w-auto rounded-md"
+                className="h-8 w-auto rounded-md sm:block hidden"
                 src="/logo.png"
                 alt="Invisiguards"
                 width={140}

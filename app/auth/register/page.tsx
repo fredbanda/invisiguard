@@ -4,10 +4,8 @@ const RegisterPage = () => {
   return (
 
     <div className="mt-4 ">
-        <div className="container flex flex-col items-center justify-center">
-            <h1 className="text-3xl font-bold tracking-tight text-black mt-4 ">
+        <div className="container flex flex-col items-center justify-center" >
             <RegisterForm />
-            </h1>
             <div className="'h-1 bg-muted my-4" />
         </div>
     </div>
