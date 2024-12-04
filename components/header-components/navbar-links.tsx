@@ -1,4 +1,4 @@
-import  Link  from "next/link";
+import Link from "next/link";
 import { Button } from "../ui/button";
 import { LogoutButton } from "../auth/logout-button";
 import { auth } from "@/auth";
@@ -59,31 +59,31 @@ const SignedIn = () => {
         <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
           <div className="hidden sm:ml-6 sm:block">
             <div className="flex space-x-4">
-              <a
-                href="#"
+              <Link
+                href="/dashboard"
                 className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
                 aria-current="page"
               >
                 Dashboard
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                href="/dashboard/services"
                 className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
               >
-                Team
-              </a>
-              <a
-                href="#"
+                Services
+              </Link>
+              <Link
+                href="/dashboard/support"
                 className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
               >
-                Projects
-              </a>
-              <a
+                Support
+              </Link>
+              <Link
                 href="#"
                 className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
               >
                 Calendar
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -114,20 +114,20 @@ const SignedIn = () => {
             aria-orientation="vertical"
             aria-labelledby="user-menu-button"
           >
-            <a
-              href="#"
+            <Link
+              href="/dashboard/profile"
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               role="menuitem"
             >
               Your Profile
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              href="/dashboard/settings"
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               role="menuitem"
             >
               Settings
-            </a>
+            </Link>
             <LogoutButton />
           </div>
         </div>
@@ -139,6 +139,30 @@ const SignedIn = () => {
 const SignedOut = () => {
   return (
     <>
+    <li>
+      <Link
+        href="/"
+        className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+      >
+        Home
+      </Link>
+      </li>
+      <li>
+      <Link
+        href="/about"
+        className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+      >
+        About Us
+      </Link>
+      </li>
+      <li>
+      <Link
+        href="contact"
+        className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+      >
+        Contact
+      </Link>
+      </li>
       <li>
         <Button variant="custom" size="lg" asChild>
           <Link href="/auth/login">Login</Link>
@@ -149,7 +173,6 @@ const SignedOut = () => {
           <Link href="/auth/register">Register</Link>
         </Button>
       </li>
-      
     </>
   );
 };
