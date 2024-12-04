@@ -4,10 +4,30 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { LogoutButton } from "../auth/logout-button";
+import { useSession } from "next-auth/react";
+
 
 export const SignedIn = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+
+  const {data: session} = useSession();
+
+//  switch (session?.status) {
+//     case "loading":
+//         return <div>Loading...</div>;
+//     case "authenticated":
+//         return <SignedIn />;
+//     case "unauthenticated":
+//         return <SignedOut />;
+//         default:
+//             return null;
+// }
+//  }
+
+
+  // Determine user image source
+  const userImage = session?.user?.image || "/user.png";
 
   return (
     <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -80,20 +100,20 @@ export const SignedIn = () => {
 
         {/* Profile Dropdown */}
         <div className="relative ml-3">
-          <button
-            type="button"
-            className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-            onClick={() => setUserMenuOpen(!userMenuOpen)}
-          >
-            <span className="sr-only">Open user menu</span>
-            <Image
-              className="h-8 w-8 rounded-full"
-              src="/user.png"
-              alt="User Profile"
-              width={40}
-              height={40}
-            />
-          </button>
+        <button
+      type="button"
+      className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+      onClick={() => setUserMenuOpen(!userMenuOpen)}
+    >
+      <span className="sr-only">Open user menu</span>
+      <Image
+        className="h-8 w-8 rounded-full"
+        src={userImage}
+        alt="User Profile"
+        width={40}
+        height={40}
+      />
+    </button>
 
           {userMenuOpen && (
             <div
