@@ -21,7 +21,7 @@ const nextAuth = NextAuth({
                     if(!user) return null;
                     if(!user.password) return null;
 
-                    const passwordMatch = await bcrypt.compare(user.password, password);
+                    const passwordMatch = await bcrypt.compare(password, user.password);
                     
                     if(passwordMatch) {
                         const {password, ...userWithoutPassword} = user;
