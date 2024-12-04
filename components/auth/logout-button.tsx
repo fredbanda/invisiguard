@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 export const LogoutButton = () => {
     const clickHandler = async () => {
         await logoutAction();
-        window.location.href = "/auth/login";
+        window.location.href = "/";
     }
 
   return (

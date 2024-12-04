@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { NavbarLinks } from "./navbar-links";
 
 export const Navbar = () => {
   return (
@@ -17,18 +17,7 @@ export const Navbar = () => {
         </Link>
 
         <ul className="flex items-center gap-x-4">
-            <li>
-                <Button variant="custom" size="lg" asChild>
-                    <Link href="/auth/login">Login
-                    </Link>
-                </Button>
-            </li>
-            <li>
-                <Button variant="custom" size="lg" asChild>
-                    <Link href="/auth/register">Register
-                    </Link>
-                </Button>
-            </li>
+          <NavbarLinks />
         </ul>
       </div>
     </nav>
