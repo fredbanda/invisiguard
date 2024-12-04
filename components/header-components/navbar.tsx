@@ -12,7 +12,7 @@ export const Navbar = () => {
             alt="Invisiguard Logo"
             width={140}
             height={50}
-            className="rounded-md"
+            className="rounded-md "
           />
         </Link>
 
