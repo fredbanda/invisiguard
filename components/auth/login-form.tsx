@@ -15,6 +15,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { CardWrapper } from "./card-wrapper";
 import { loginUserAction } from "@/actions/login-user-actions";
+import { toast } from "sonner";
 
 export const LoginForm = () => {
   const form = useForm<LoginInput>({
@@ -24,7 +25,7 @@ export const LoginForm = () => {
       password: "",
     },
   });
-  const { handleSubmit, control, formState, reset} = form;
+  const { handleSubmit, control, formState, reset, setError} = form;
 
   const submit = async (values: LoginInput) => {
     const res = await loginUserAction(values);
@@ -32,7 +33,15 @@ export const LoginForm = () => {
     if (res.success) {
       reset();
     } else {
-      console.log("This is kinda fake");
+      switch (res.statusCode){
+        case 500:
+          default:
+            const error = res.error || "Internal server error";
+            toast.error(error, {
+              position: "top-right",
+            });
+            setError("password", {message: error})
+      }
     }
   };
 
