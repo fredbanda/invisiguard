@@ -15,7 +15,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { CardWrapper } from "./card-wrapper";
 import { loginUserAction } from "@/actions/login-user-actions";
-import { toast } from "sonner";
+//import { toast } from "sonner";
 
 export const LoginForm = () => {
   const form = useForm<LoginInput>({
@@ -25,7 +25,7 @@ export const LoginForm = () => {
       password: "",
     },
   });
-  const { handleSubmit, control, formState, reset, setError} = form;
+  const { handleSubmit, control, formState, reset} = form;
 
   const submit = async (values: LoginInput) => {
     const res = await loginUserAction(values);
@@ -33,16 +33,18 @@ export const LoginForm = () => {
     if (res.success) {
       reset();
     } else {
-      switch (res.statusCode){
-        case 500:
-          default:
-            const error = res.error || "Internal server error";
-            toast.error(error, {
-              position: "top-right",
-            });
-            setError("password", {message: error})
-      }
-    }
+      console.log("This is the debugger not deburger");
+      
+    //   switch (res.statusCode){
+    //     case 500:
+    //       default:
+    //         const error = res.error || "Internal server error";
+    //         toast.error(error, {
+    //           position: "top-right",
+    //         });
+    //         setError("password", {message: error})
+    //   }
+     }
   };
 
   return (
