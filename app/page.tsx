@@ -1,3 +1,5 @@
+
+import { FeatureOne } from "./_page-components/Features/feature-one";
 import Hero from "./_page-components/hero-section";
 import Pricing from "./_page-components/Pricing";
 
@@ -7,7 +9,9 @@ export default function Home() {
 
 
       <Hero />
+      
       <Pricing />
+<FeatureOne />
     </main>
   );
 }

@@ -68,7 +68,7 @@ export const SignedOut = () => {
 
         {/* Buttons (Login/Register) */}
         <div className="hidden sm:flex sm:space-x-4">
-          <Button variant="custom" size="lg" asChild>
+          <Button variant="custom" size="lg" asChild className="ml-6">
             <Link href="/auth/login">Login</Link>
           </Button>
           <Button variant="custom" size="lg" asChild>
