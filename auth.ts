@@ -1,6 +1,8 @@
 import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import { LoginSchema } from "./validators/login-validater";
+import Google from "next-auth/providers/google"
+import Github from "next-auth/providers/github"
 import * as v from "valibot";
 import { getUserByEmail } from "./resources/user-queries";
 import bcrypt from "bcryptjs"
@@ -31,6 +33,14 @@ const nextAuth = NextAuth({
                 }
                 return null;
             }
+        }),
+        Google({
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        }),
+        Github({
+            clientId: process.env.GITHUB_CLIENT_ID,
+            clientSecret: process.env.GITHUB_CLIENT_SECRET,
         })
     ]
 });
