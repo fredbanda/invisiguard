@@ -11,7 +11,7 @@ export const LogoutButton = () => {
 
   return (
         <>
-            <Button variant="custom" size="lg" onClick={clickHandler} className="w-full">
+            <Button variant="default" size="lg" onClick={clickHandler} className="w-full hover:bg-red-700">
                 Logout
             </Button>
         </>
