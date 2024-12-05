@@ -4,7 +4,7 @@ import { NavbarLinks } from "./navbar-links";
 
 export const Navbar = () => {
   return (
-    <nav className="h-14 bg-gray-800 shadow-md border-b border-gray-700  ">
+    <nav className="h-14 bg-gray-800 shadow-md border-b border-gray-700">
       <div className="h-full container flex justify-between items-center">
         <Link href="/">
           <Image
@@ -12,7 +12,7 @@ export const Navbar = () => {
             alt="Invisiguard Logo"
             width={140}
             height={50}
-            className="rounded-md "
+            className="rounded-md"
           />
         </Link>
 
