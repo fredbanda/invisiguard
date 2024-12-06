@@ -20,7 +20,6 @@ const nextAuth = NextAuth({
         authenticatorsTable: schema.authenticators,
     }),
     session: {strategy: 'jwt'},
-    secret: process.env.AUTH_SECRET,
     pages: {signIn: "/auth/login"},
     callbacks:{
         async jwt({token, user}) {
@@ -82,7 +81,8 @@ const nextAuth = NextAuth({
             clientId: process.env.GITHUB_CLIENT_ID,
             clientSecret: process.env.GITHUB_CLIENT_SECRET,
         })
-    ]
+    ],
+    secret: process.env.AUTH_SECRET,
 });
 
 export const {handlers, signIn, signOut, auth} = nextAuth;
