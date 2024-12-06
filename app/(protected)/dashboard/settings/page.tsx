@@ -1,11 +1,14 @@
 import { auth } from "@/auth";
 import { LogoutButton } from "@/components/auth/logout-button";
 import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { Badge } from "lucide-react";
 import { User } from "next-auth";
 import Link from "next/link";
 
 const SettingsPage = async () => {
   const session = await auth();
+  console.log(session?.user)
   return (
     <main className="mt-4">
       <div className="container">
@@ -24,21 +27,42 @@ export default SettingsPage;
 
 const SignedIn = ({user}: {user: User}) => {
   return <>
-  <h2 className="text-2xl font-bold tracking-tight text-white/80">User Information for {user.name || "User"}</h2>
-  <table className="mt-4 table-auto divide-y">
-    <thead>
-      <tr className="divide-x ">
-        <th className="bg-gray-50 px-6 py-3 text-start ">Name</th>
-        <th className="bg-gray-50 px-6 py-3 text-start">Email</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr className="divide-x">
-        <td className="px-6 py-3 text-white/80">{user.name || null}</td>
-        <td className="px-6 py-3 text-white/80">{user.email }</td>
-        </tr>
-    </tbody>
-  </table>
+  <h2 className="text-2xl font-bold tracking-tight text-white/80 text-center">User Information for {user.name || "User"}</h2>
+  <Card className="w-[600px] shadow-md text-bold">
+      <CardHeader>
+      
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+          <p className="text-sm font-medium">ID</p>
+          <p>{user?.id}</p>
+        </div>
+        <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+          <p className="text-sm font-medium">Name</p>
+          <p>{user?.name}</p>
+        </div>
+        <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+          <p className="text-sm font-medium">Email</p>
+          <p>{user?.email}</p>
+        </div>
+        {/* <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+          <p className="text-sm font-medium">Company</p>
+          <p>{user?.company}</p>
+        </div>
+        <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+          <p className="text-sm font-medium">Phone Number</p>
+          <p>{user?.phone}</p>
+        </div> */}
+        <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+          <p className="text-sm font-medium">Role</p>
+          <p>{user?.role.toUpperCase()}</p>
+        </div>
+        <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+          <p className="text-sm font-medium">Two Factor Authentication</p>
+          <Badge></Badge>
+        </div>
+      </CardContent>
+    </Card>
   <div className="my-4 h-2 bg-muted" />
     <LogoutButton />
   </>;

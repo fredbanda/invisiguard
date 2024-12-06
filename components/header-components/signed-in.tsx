@@ -13,19 +13,6 @@ export const SignedIn = () => {
 
   const {data: session} = useSession();
 
-//  switch (session?.status) {
-//     case "loading":
-//         return <div>Loading...</div>;
-//     case "authenticated":
-//         return <SignedIn />;
-//     case "unauthenticated":
-//         return <SignedOut />;
-//         default:
-//             return null;
-// }
-//  }
-
-
   // Determine user image source
   const userImage = session?.user?.image || "/user.png";
 

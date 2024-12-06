@@ -25,8 +25,7 @@ import {
     id: text("id")
       .primaryKey()
       .$defaultFn(() => crypto.randomUUID()),
-    first_name: text("first_name"),
-    last_name: text("last_name"),
+    name: text("name"),
     phone: text("phone"),
     company: text("company"),
     email: text("email").unique().notNull(),

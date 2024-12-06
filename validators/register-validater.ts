@@ -2,14 +2,9 @@ import * as v from "valibot";
 
 export const RegisterSchema = v.pipe(
     v.object({
-        first_name: v.pipe(
-            v.string("First Name is required please provide your name"),
+        name: v.pipe(
+            v.string("Name is required please provide your name"),
             v.nonEmpty("First name can not be empty"),
-            v.minLength(2, "Name must be at least 2 characters long"),
-        ),
-        last_name: v.pipe(
-            v.string("Last Name is required please provide your name"),
-            v.nonEmpty("Last name can not be empty"),
             v.minLength(2, "Name must be at least 2 characters long"),
         ),
         email: v.pipe(

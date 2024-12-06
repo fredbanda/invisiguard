@@ -25,8 +25,7 @@ export const RegisterForm = () => {
   const form = useForm<RegisterInput>({
     resolver: valibotResolver(RegisterSchema),
     defaultValues: {
-      first_name: "",
-      last_name: "",
+      name: "",
       email: "",
       phone: "",
       company: "",
@@ -89,35 +88,15 @@ export const RegisterForm = () => {
             <div className="flex-1 space-y-4">
               <FormField
                 control={control}
-                name="first_name"
+                name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>First Name</FormLabel>
+                    <FormLabel>Your Full Names</FormLabel>
                     <FormControl>
                       <Input type="text" placeholder="e.g. Shaka" 
                       {...field}
                       disabled={formState.isSubmitting}
                        />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="flex-1 space-y-4">
-              <FormField
-                control={control}
-                name="last_name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Last Name</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="text"
-                        placeholder="e.g. Zulu"
-                        {...field}
-                        disabled={formState.isSubmitting}
-                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

@@ -24,7 +24,7 @@ export async function registerUserAction(values: unknown): Promise<Res> {
         return {success: false, error: flatErrors, statusCode: 400}
     }
 
-    const {first_name, last_name, email, phone, company, image, password, confirm_password} = parsedValues.output;
+    const {name, email, phone, company, image, password, confirm_password} = parsedValues.output;
 
     try {
         const existingUser = await db
@@ -45,7 +45,7 @@ export async function registerUserAction(values: unknown): Promise<Res> {
         const hashedPassword = await bcrypt.hash(password, 10);
         
         const newUser = await db.insert(users).values({
-            first_name, last_name, email, phone, company, password: hashedPassword
+            name, email, phone, company, password: hashedPassword
         })
         .returning({id: users.id})
         .then(res => res?.[0]);

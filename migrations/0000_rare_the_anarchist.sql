@@ -35,8 +35,7 @@ CREATE TABLE IF NOT EXISTS "session" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "user" (
 	"id" text PRIMARY KEY NOT NULL,
-	"first_name" text,
-	"last_name" text,
+	"name" text,
 	"phone" text,
 	"company" text,
 	"email" text NOT NULL,
