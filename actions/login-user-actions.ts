@@ -30,6 +30,12 @@ export async function loginUserAction(values: unknown): Promise<Res> {
             error: "Invalid credentials",
             statusCode: 401,
           };
+        case "OAuthAccountAlreadyLinkedError" as AuthError["type"]:
+          return {
+            success: false,
+            error: "Account already, linked login with google or github instead",
+            statusCode: 401,
+          };
         default:
           return {
             success: false,

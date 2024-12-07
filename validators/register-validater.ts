@@ -18,8 +18,6 @@ export const RegisterSchema = v.pipe(
                 v.pipe(v.literal(""), v.transform(() => undefined)),
                 v.pipe(
                     v.string(),
-                    v.nonEmpty(),
-                    v.minLength(10),
                 ) 
             ])
         ),
@@ -28,8 +26,6 @@ export const RegisterSchema = v.pipe(
                 v.pipe(v.literal(""), v.transform(() => undefined)),
                 v.pipe(
                     v.string("Company name is required"),
-                    v.nonEmpty(),
-                    v.minLength(10),
                 ) 
             ])
         ),
@@ -38,8 +34,6 @@ export const RegisterSchema = v.pipe(
                 v.pipe(v.literal(""), v.transform(() => undefined)),
                 v.pipe(
                     v.string(),
-                    v.nonEmpty(),
-                    v.minLength(10),
                 ) 
             ])
         ),
