@@ -83,7 +83,7 @@ const SignedOut = () => {
       </div>
       <div className="my-4 h-2 bg-muted" />
 
-      <Button asChild variant="custom" size="lg" className="p-4">
+      <Button asChild variant="default" size="lg" className="p-4 w-full">
         <Link href="/auth/login"> Sign In</Link>
       </Button>
       <div className="my-4 h-2 bg-muted" />
