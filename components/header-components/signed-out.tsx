@@ -8,7 +8,7 @@ export const SignedOut = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+    <nav className="relative mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
       <div className="relative flex h-16 items-center justify-between">
         {/* Mobile Menu Button */}
         <div className="flex items-center sm:hidden">
@@ -79,8 +79,11 @@ export const SignedOut = () => {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="sm:hidden mt-32" id="mobile-menu">
-          <div className="space-y-1 px-2 pb-3 pt-2">
+        <div
+          className="absolute top-16 right-0 z-20 bg-gray-800 text-white"
+          id="mobile-menu"
+        >
+          <div className="space-y-1 px-8 pb-3 pt-2">
             <Link
               href="/"
               className="block rounded-md px-3 py-2 text-base font-medium text-white bg-gray-900"
