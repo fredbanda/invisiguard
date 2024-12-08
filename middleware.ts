@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
+import NextAuth, {type Session } from "next-auth";
+import { authConfig } from "./auth.config";
 
 export async function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl; // Extract the pathname
@@ -32,9 +34,6 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: [
-        "/",               // Home route
-        "/dashboard/:path*", // Protect dashboard routes
-        "/auth/:path*",    // Redirect logged-in users away from "/auth"
-    ],
+    matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api/trpc)(.*)"],
 };
+

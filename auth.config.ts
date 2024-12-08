@@ -5,45 +5,72 @@ import * as schema from "./drizzle/schema";
 import { oauthVerifyEmailAction } from "./actions/oauth-verify-email-action";
 import Google from "@auth/core/providers/google";
 import Github from "@auth/core/providers/github";
+import { USER_ROLES } from "./lib/constants";
+import { changeUserRoleAction } from "./actions/changeUserRoleAction";
+import { AdapterUser } from "next-auth/adapters";
+import { getTableColumns } from "drizzle-orm";
 
 export const authConfig = {
-  adapter: DrizzleAdapter(db, {
+  // adapter: DrizzleAdapter(db, {
+  //   accountsTable: schema.accounts,
+  //   usersTable: schema.users,
+  //   sessionsTable: schema.sessions,
+  //   verificationTokensTable: schema.verificationTokens,
+  //   authenticatorsTable: schema.authenticators,
+
+  adapter: {
+    ...DrizzleAdapter(db, {
     accountsTable: schema.accounts,
     usersTable: schema.users,
     sessionsTable: schema.sessions,
     verificationTokensTable: schema.verificationTokens,
     authenticatorsTable: schema.authenticators,
   }),
+    async createUser(data: AdapterUser){
+      const {id, ...insertData} = data;
+      const hasDefaultId = getTableColumns(schema.users)["id"]["hasDefault"];
+      const isAdmin = process.env.ADMIN_EMAIL_ADDRESS?.toLowerCase() === data.email.toLowerCase();
+      
+      if (hasDefaultId && isAdmin) {
+        insertData.role = isAdmin ? USER_ROLES.ADMIN : USER_ROLES.USER;
+      }
+      return db
+        .insert(schema.users)
+        .values(hasDefaultId ? insertData : {...insertData, id})
+        .returning()
+        .then(res => res?.[0]);
+    },
+  },
   session: { strategy: "jwt" },
   pages: { signIn: "/auth/login" },
   secret: process.env.AUTH_SECRET,
 
   callbacks: {
-    authorized({auth, request}){
-        const { nextUrl } = request;
+    authorized({ auth, request }) {
+      const { nextUrl } = request;
 
-        const isLoggedIn = !!auth?.user;
-        const isOnDashboard = nextUrl.pathname.startsWith("/dashboard");
-        const isOnAuth = nextUrl.pathname.startsWith("/auth");
-    
-        // Redirect users trying to access the dashboard when not logged in
-        if (isOnDashboard) {
-            if (isLoggedIn) {
-                return true; // Allow logged-in users to access the dashboard
-            }
-            return Response.redirect(new URL("/auth/login", request.url)); // Redirect to login
+      const isLoggedIn = !!auth?.user;
+      const isOnDashboard = nextUrl.pathname.startsWith("/dashboard");
+      const isOnAuth = nextUrl.pathname.startsWith("/auth");
+
+      // Redirect users trying to access the dashboard when not logged in
+      if (isOnDashboard) {
+        if (isLoggedIn) {
+          return true; // Allow logged-in users to access the dashboard
         }
-    
-        // Redirect logged-in users trying to access auth routes
-        if (isOnAuth) {
-            if (!isLoggedIn) {
-                return true; // Allow unauthenticated users to access auth routes
-            }
-            return Response.redirect(new URL("/", request.url)); // Redirect to the homepage or another page
+        return Response.redirect(new URL("/auth/login", request.url)); // Redirect to login
+      }
+
+      // Redirect logged-in users trying to access auth routes
+      if (isOnAuth) {
+        if (!isLoggedIn) {
+          return true; // Allow unauthenticated users to access auth routes
         }
-    
-        // Allow other routes by default
-        return true;
+        return Response.redirect(new URL("/", request.url)); // Redirect to the homepage or another page
+      }
+
+      // Allow other routes by default
+      return true;
     },
     async jwt({ token, user, trigger, session }) {
       if (trigger === "update") {
@@ -54,6 +81,15 @@ export const authConfig = {
       if (user?.role) token.role = user.role;
       if (user?.company) token.company = user.company;
       if (user?.phone) token.phone = user.phone;
+      if (user?.image) token.picture = user.image;
+
+      // if (
+      //   user?.email &&
+      //   process.env.ADMIN_EMAIL_ADDRESS?.toLowerCase() ===
+      //     user.email.toLowerCase()
+      // ) {
+      //   token.role = USER_ROLES.ADMIN;
+      // }
 
       return token;
     },
@@ -89,7 +125,14 @@ export const authConfig = {
         if (user.email) await oauthVerifyEmailAction(user.email);
       }
     },
+    // async createUser({user}){
+    //   if (user.email && process.env.ADMIN_EMAIL_ADDRESS?.toLowerCase() === user.email.toLowerCase()) {
+    //     await changeUserRoleAction(user.email, USER_ROLES.ADMIN);
+    //   }
+    // },
   },
+
+
   providers: [
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -101,5 +144,5 @@ export const authConfig = {
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
       allowDangerousEmailAccountLinking: true,
     }),
-  ]
+  ],
 } satisfies NextAuthConfig;

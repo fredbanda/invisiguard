@@ -12,4 +12,4 @@ const drizzleConfig = {
     dbCredentials: {url: DATABASE_URL},
 } satisfies Config;
 
-export default defineConfig(drizzleConfig);
+export default defineConfig(drizzleConfig)

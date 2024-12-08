@@ -14,6 +14,11 @@ CREATE TABLE IF NOT EXISTS "account" (
 	CONSTRAINT "account_provider_providerAccountId_pk" PRIMARY KEY("provider","providerAccountId")
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "adminUserEmailAddress" (
+	"id" text PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"email" text NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "authenticator" (
 	"credentialID" text NOT NULL,
 	"userId" text NOT NULL,
@@ -71,4 +76,5 @@ EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
+CREATE UNIQUE INDEX IF NOT EXISTS "adminEmailUniqueIndex" ON "adminUserEmailAddress" USING btree (lower("email"));--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "emailUniqueIndex" ON "user" USING btree (lower("email"));

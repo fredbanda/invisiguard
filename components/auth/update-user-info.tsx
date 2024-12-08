@@ -196,11 +196,8 @@ export const UpdateUserInfoForm = ({ user }: UpdateUserInfoFormProps) => {
                             <Image
                               src={field.value}
                               alt="Current Image"
-                              style={{
-                                maxWidth: "100px",
-                                maxHeight: "100px",
-                                objectFit: "cover",
-                              }}
+                              width={100}
+                              height={100}
                             />
                           </div>
                         )}

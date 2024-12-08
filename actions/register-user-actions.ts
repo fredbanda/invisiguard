@@ -6,6 +6,7 @@ import bcrypt from "bcryptjs";
 import db from "@/drizzle";
 import { lower, users } from "@/drizzle/schema";
 import { eq } from "drizzle-orm";
+import { USER_ROLES } from "@/lib/constants";
 
 
 type Res =
@@ -43,9 +44,13 @@ export async function registerUserAction(values: unknown): Promise<Res> {
 
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
+
+        const isAdmin = process.env.ADMIN_EMAIL_ADDRESS?.toLowerCase() === email.toLowerCase();
         
         const newUser = await db.insert(users).values({
-            name, email, phone, company, password: hashedPassword
+            name, email, phone, company, password: hashedPassword,
+            role: isAdmin ? USER_ROLES.ADMIN : USER_ROLES.USER,
+            image,
         })
         .returning({id: users.id})
         .then(res => res?.[0]);
