@@ -1,39 +1,34 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
-import NextAuth, {type Session } from "next-auth";
-import { authConfig } from "./auth.config";
+
+function redirectToDashboard(req: NextRequest) {
+  return NextResponse.redirect(new URL("/dashboard", req.url));
+}
+
+function redirectToLogin(req: NextRequest) {
+  const loginUrl = new URL("/auth/login", req.url);
+  loginUrl.searchParams.set("callbackUrl", req.url);
+  return NextResponse.redirect(loginUrl);
+}
 
 export async function middleware(req: NextRequest) {
-    const { pathname } = req.nextUrl; // Extract the pathname
-    const secret = process.env.AUTH_SECRET; // Ensure the secret is defined
+  const { pathname } = req.nextUrl;
+  const secret = process.env.AUTH_SECRET;
 
-    // Retrieve the token with the secret
-    const token = await getToken({ req, secret });
+  const token = await getToken({ req, secret });
 
-    // Redirect logged-in users away from "/auth" routes
-    if (pathname.startsWith("/auth")) {
-        if (token) {
-            // Redirect to dashboard if logged in
-            return NextResponse.redirect(new URL("/dashboard", req.url));
-        }
-        return NextResponse.next(); // Allow access to "/auth" routes if not logged in
-    }
-
-    // Protect routes starting with "/dashboard"
-    if (pathname.startsWith("/dashboard")) {
-        if (!token) {
-            // Redirect to login page if not authenticated
-            const loginUrl = new URL("/auth/login", req.url);
-            loginUrl.searchParams.set("callbackUrl", req.url); // Preserve the current path for redirect after login
-            return NextResponse.redirect(loginUrl);
-        }
-    }
-
-    // Allow all other routes
+  if (pathname.startsWith("/auth")) {
+    if (token) return redirectToDashboard(req);
     return NextResponse.next();
+  }
+
+  if (pathname.startsWith("/dashboard")) {
+    if (!token) return redirectToLogin(req);
+  }
+
+  return NextResponse.next();
 }
 
 export const config = {
-    matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api/trpc)(.*)"],
+  matcher: ["/", "/auth/:path*", "/dashboard/:path*"],
 };
-

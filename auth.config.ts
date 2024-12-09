@@ -6,7 +6,6 @@ import { oauthVerifyEmailAction } from "./actions/oauth-verify-email-action";
 import Google from "@auth/core/providers/google";
 import Github from "@auth/core/providers/github";
 import { USER_ROLES } from "./lib/constants";
-import { changeUserRoleAction } from "./actions/changeUserRoleAction";
 import { AdapterUser } from "next-auth/adapters";
 import { getTableColumns } from "drizzle-orm";
 
@@ -46,31 +45,14 @@ export const authConfig = {
   secret: process.env.AUTH_SECRET,
 
   callbacks: {
-    authorized({ auth, request }) {
-      const { nextUrl } = request;
-
-      const isLoggedIn = !!auth?.user;
-      const isOnDashboard = nextUrl.pathname.startsWith("/dashboard");
-      const isOnAuth = nextUrl.pathname.startsWith("/auth");
-
-      // Redirect users trying to access the dashboard when not logged in
-      if (isOnDashboard) {
-        if (isLoggedIn) {
-          return true; // Allow logged-in users to access the dashboard
-        }
-        return Response.redirect(new URL("/auth/login", request.url)); // Redirect to login
+    authorized({ auth }) {
+      const user = auth?.user;
+  
+      if (user) {
+        const hasAccess = user.role === USER_ROLES.ADMIN;
+        return hasAccess;
       }
-
-      // Redirect logged-in users trying to access auth routes
-      if (isOnAuth) {
-        if (!isLoggedIn) {
-          return true; // Allow unauthenticated users to access auth routes
-        }
-        return Response.redirect(new URL("/", request.url)); // Redirect to the homepage or another page
-      }
-
-      // Allow other routes by default
-      return true;
+      return false;
     },
     async jwt({ token, user, trigger, session }) {
       if (trigger === "update") {

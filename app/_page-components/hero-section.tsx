@@ -13,7 +13,7 @@ const Hero = () => {
                   Protect your business from attacks with security Invisiguard!
                 </h1>
                 <p className="mb-12 text-base !leading-relaxed text-gray-200 dark:text-body-color-dark sm:text-lg md:text-xl">
-                Protect your business with our comprehensive security suite: automated reference checks, phishing detection, penetration testing, and email and phone scanning. Stay ahead of threats, safeguard your data, and ensure peace of mind—all with our trusted SaaS platform.
+                In today&apos;s digital landscape, online criminals constantly evolve their tactics, making businesses vulnerable to breaches and phishing scams. Invisiguard offers cutting-edge cybersecurity solutions, including phishing protection and penetration testing, to proactively defend your enterprise. Trust Invisiguard to secure your assets, ensure compliance, and build customer trust with robust, reliable protection.
                 </p>
                 <div className="flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
                   <Link

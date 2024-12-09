@@ -93,7 +93,7 @@ const Footer= () => {
           />
         </h6>
         <p>
-        Revolutionize your work life with our visionary SaaS of the future. Redefining how people source and manage work, this cutting-edge platform delivers unparalleled efficiency and collaboration.
+        Protect your business with our comprehensive security suite: automated reference checks, phishing detection, penetration testing, and email and phone scanning. Stay ahead of threats, safeguard your data, and ensure peace of mind—all with our trusted SaaS platform.
         </p>
       </div>
       <div className="">

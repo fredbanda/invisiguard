@@ -3,20 +3,25 @@ import { LogoutButton } from "@/components/auth/logout-button";
 import { UpdateUserInfoForm } from "@/components/auth/update-user-info";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { Badge } from "lucide-react";
+import { USER_ROLES } from "@/lib/constants";
+import { Badge, LockIcon } from "lucide-react";
 import { User } from "next-auth";
 import Link from "next/link";
 
 const SettingsPage = async () => {
   const session = await auth();
+  const isAdmin = session?.user?.role === USER_ROLES.ADMIN;
 
   console.log(session?.user)
   return (
     <main className="mt-4">
       <div className="container">
+        <div className="flex items-center justify-between">
         <h3 className="w-full text-3xl font-bold tracking-tight text-white/80 text-center">
           Settings Page
         </h3>
+        {isAdmin && <AdminPanelButton />}
+        </div>
         <div className="my-4 h-2 bg-muted" />
 
         {!!session?.user ? <SignedIn user={session.user} /> : <SignedOut />}
@@ -51,6 +56,10 @@ const SignedIn = ({user}: {user: User}) => {
         <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
           <p className="text-sm font-medium">Email</p>
           <p>{user?.email}</p>
+        </div>
+        <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+          <p className="text-sm font-medium">Email Verified</p>
+          <p>{user?.emailVerified ? "NO" : "YES"}</p>
         </div>
         <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
           <p className="text-sm font-medium">Company</p>
@@ -90,3 +99,12 @@ const SignedOut = () => {
     </>
   );
 };
+
+const AdminPanelButton = () => {
+  return<Button asChild variant="default" size="lg" className="p-4 w-full">
+    <Link href="/dashboard/admin">
+    <LockIcon className="mr-2 h-4 w-4" />
+    Admin Panel
+    </Link>
+  </Button>
+}
