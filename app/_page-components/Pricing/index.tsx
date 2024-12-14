@@ -60,7 +60,7 @@ const Pricing = () => {
         <div className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
           <PricingBox
             packageName="Business Starter"
-            price={isMonthly ? "2000" : "11000"}
+            price={isMonthly ? "2000" : "21000"}
             duration={isMonthly ? "mo" : "yr"}
             subtitle="Save more by paying for the yearly plan."
           >
@@ -73,7 +73,7 @@ const Pricing = () => {
           </PricingBox>
           <PricingBox
             packageName="Business Growth Pro"
-            price={isMonthly ? "2500" : "23000"}
+            price={isMonthly ? "2500" : "27000"}
             duration={isMonthly ? "mo" : "yr"}
             subtitle="Get protection from all the latest threats."
           >
@@ -86,7 +86,7 @@ const Pricing = () => {
           </PricingBox>
           <PricingBox
             packageName="Enterprise Protection"
-            price={isMonthly ? "3500" : "32000"}
+            price={isMonthly ? "3500" : "35000"}
             duration={isMonthly ? "mo" : "yr"}
             subtitle="Lorem ipsum dolor sit amet adiscing elit Mauris egestas enim."
           >

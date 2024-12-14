@@ -26,7 +26,16 @@ type Res =
   
     if (!parsedValues.success) {
       const flatErrors = v.flatten(parsedValues.issues);
-      return { success: false, error: flatErrors, statusCode: 400 };
+  
+      // Extracting the error message from the nested structure
+      const errorMessages = Object.entries(flatErrors).reduce((acc, [key, value]) => {
+        const message = Array.isArray(value) ? value[0] : "Invalid input";
+        acc[key] = message;
+        return acc;
+      }, {} as Record<string, string>);
+  
+      console.error("Validation errors:", errorMessages);
+      return { success: false, error: errorMessages, statusCode: 400 };
     }
   
     const { id, name, image, company, phone } = parsedValues.output;
@@ -34,6 +43,7 @@ type Res =
     const session = await auth();
   
     if (!session?.user?.id || session.user.id !== id) {
+      console.error("Unauthorized access attempt:", { sessionUserId: session?.user?.id, targetUserId: id });
       return {
         success: false,
         error: "You are not authorized to update this user",
@@ -47,24 +57,24 @@ type Res =
       session?.user?.company === company &&
       session?.user?.phone === phone
     ) {
+      console.log("No changes detected for user:", id);
       return { success: true, data: { id, name, image, company, phone } };
     }
   
-    // Transform `undefined` to `null` here before database update
+    // Sanitize input
     const sanitizedData = {
       name,
       image: image ?? null,
       company: company ?? null,
       phone: phone ?? null,
     };
-
-    console.log(sanitizedData);
-    
+  
+    console.log("Sanitized data for update:", sanitizedData);
   
     try {
       const updatedUser = await db
         .update(users)
-        .set(sanitizedData) // Pass sanitized values
+        .set(sanitizedData)
         .where(eq(users.id, id))
         .returning({
           id: users.id,
@@ -75,10 +85,20 @@ type Res =
         })
         .then((res) => res[0]);
   
+      console.log("Updated user data:", updatedUser);
+  
+      if (!updatedUser) {
+        console.error("Update returned no results for user ID:", id);
+        return {
+          success: false,
+          error: "User update failed. No matching user found.",
+          statusCode: 400,
+        };
+      }
+  
       return { success: true, data: updatedUser };
     } catch (error) {
-      console.error(error);
+      console.error("Database update error:", error);
       return { success: false, error: "Internal server error", statusCode: 500 };
     }
   }
-  

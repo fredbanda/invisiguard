@@ -7,7 +7,7 @@ function redirectToDashboard(req: NextRequest) {
 
 function redirectToLogin(req: NextRequest) {
   const loginUrl = new URL("/auth/login", req.url);
-  loginUrl.searchParams.set("callbackUrl", req.url);
+  //loginUrl.searchParams.set("callbackUrl", req.url);
   return NextResponse.redirect(loginUrl);
 }
 

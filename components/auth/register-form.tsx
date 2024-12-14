@@ -68,7 +68,7 @@ export const RegisterForm = () => {
 
   useEffect(() => {
     if (success) {
-      router.push("/auth/login");
+      router.push("/auth/register/success");
     }
   }, [success, router]);
 

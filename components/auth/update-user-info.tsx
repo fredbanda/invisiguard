@@ -30,6 +30,8 @@ import { updateUserInfoAction } from "@/actions/updateUserInfoAction";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 type UpdateUserInfoFormProps = {
   user: User;
@@ -37,68 +39,66 @@ type UpdateUserInfoFormProps = {
 
 export const UpdateUserInfoForm = ({ user }: UpdateUserInfoFormProps) => {
   const { data: session, update } = useSession();
-  const {
-    id,
-    name: defaultName,
-    image: defaultImage,
-    company: defaultCompany,
-    phone: defaultPhone,
-  } = user;
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<UpdateUserInfoInput>({
     resolver: valibotResolver(UpdateUserInfoSchema),
     defaultValues: {
-      id,
-      name: defaultName || "",
-      image: defaultImage || "",
-      company: defaultCompany || "",
-      phone: defaultPhone || "",
+      id: user.id,
+      name: user.name || "",
+      image: user.image || "",
+      company: user.company || "",
+      phone: user.phone || "",
     },
   });
 
-  const { handleSubmit, control, formState, setError } = form;
+  const { handleSubmit, setError, formState, control } = form;
 
   const submit = async (values: UpdateUserInfoInput) => {
-    const res = await updateUserInfoAction(values);
+    try {
+      setLoading(true);
+      const res = await updateUserInfoAction(values);
 
-    if (res.success) {
-      const updatedUser = res.data;
+      if (res.success) {
+        const updatedUser = res.data;
 
-      if (session?.user) {
-        await update({
-          user: {
-            ...session.user,
-            name: updatedUser.name,
-            image: updatedUser.image,
-            company: updatedUser.company,
-            phone: updatedUser.phone,
-          },
+        if (session?.user) {
+          await update({
+            user: {
+              ...session.user,
+              name: updatedUser.name,
+              image: updatedUser.image,
+              company: updatedUser.company,
+              phone: updatedUser.phone,
+            },
+          });
+        }
+
+        toast.success("User information updated successfully", {
+          position: "top-right",
         });
+        router.push("/dashboard");
+      } else {
+        if (res.statusCode === 400 && res.error?.nested) {
+          Object.entries(res.error.nested).forEach(([key, value]) => {
+            setError(key as keyof UpdateUserInfoInput, {
+              message: value?.[0] || "Invalid input",
+            });
+          });
+        } else {
+          toast.error(
+            typeof res.error === "string" ? res.error : "Internal server error",
+            { position: "top-right" }
+          );
+        }
       }
-      toast.success("User information updated successfully", {
+    } catch (error) {
+      toast.error("Something went wrong. Please try again later.", {
         position: "top-right",
       });
-      window.location.href = "/dashboard";
-    } else {
-      switch (res.statusCode) {
-        case 400:
-          const nestedErrors = res.error.nested;
-
-          for (const key in nestedErrors) {
-            setError(key as keyof UpdateUserInfoInput, {
-              message: nestedErrors[key]?.[0],
-            });
-          }
-
-          break;
-        case 401:
-        case 500:
-        default:
-          const error = res.error || "Internal server error";
-          toast.error(error, {
-            position: "top-right",
-          });
-      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -129,8 +129,8 @@ export const UpdateUserInfoForm = ({ user }: UpdateUserInfoFormProps) => {
               className="w-full max-w-[600px] space-y-4"
             >
               <FormField
-                control={control}
                 name="name"
+                control={control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Your Full Names</FormLabel>
@@ -147,8 +147,8 @@ export const UpdateUserInfoForm = ({ user }: UpdateUserInfoFormProps) => {
                 )}
               />
               <FormField
-                control={control}
                 name="company"
+                control={control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Company Name</FormLabel>
@@ -165,8 +165,8 @@ export const UpdateUserInfoForm = ({ user }: UpdateUserInfoFormProps) => {
                 )}
               />
               <FormField
-                control={control}
                 name="phone"
+                control={control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Phone Number</FormLabel>
@@ -183,8 +183,8 @@ export const UpdateUserInfoForm = ({ user }: UpdateUserInfoFormProps) => {
                 )}
               />
               <FormField
-                control={control}
                 name="image"
+                control={control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Change Image</FormLabel>

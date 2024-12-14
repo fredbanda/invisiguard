@@ -7,6 +7,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ImArrowUpLeft2 } from "react-icons/im";
 import { ToggleEmailVerifiedInput } from "./_components/toggle-email-verified-input";
+import { ChangeUserRoleInput } from "./_components/change-user-role-input";
 
 const AdminPage = async () => {
     const session = await auth();
@@ -57,7 +58,13 @@ const AdminPage = async () => {
                             isAdmin={user.role === USER_ROLES.ADMIN}
                         />
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">{user.role.toUpperCase()}</td>                    
+                    <td className="px-6 py-4 whitespace-nowrap">
+                    <ChangeUserRoleInput
+                        email={user.email}
+                        currentRole={user.role}
+                        isAdmin={user.role === USER_ROLES.ADMIN}
+                     />
+                    </td>                    
                 </tr>
             })}
         </tbody>

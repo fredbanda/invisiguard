@@ -28,5 +28,5 @@ export async function toggleEmailVerifiedAction(email: string, isCurrentlyVerifi
     .set({ emailVerified })
     .where(eq(users.id, existingUser.id)); // existingUser.id is guaranteed to be defined here
 
-  revalidatePath("/dashboard/admin");
+  revalidatePath("/dashboard.admin");
 }
